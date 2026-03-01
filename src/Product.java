@@ -13,6 +13,12 @@ public class Product {
         this.category = category;
     }
 
+    // Геттеры (для удобства)
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public int getPrice() { return price; }
+    public String getCategory() { return category; }
+
     @Override
     public String toString() {
         return String.format("Товар[артикул=%d, название=%s, цена=%d, категория=%s]",
@@ -21,20 +27,18 @@ public class Product {
 
     @Override
     public boolean equals(Object obj) {
-        // Проверка на равенство ссылок
+        // 1. Проверка на равенство ссылок
         if (this == obj) return true;
 
-        // Проверка на null и совпадение классов
+        // 2. Проверка на null и совпадение классов
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        // Приведение типа
+        // 3. Приведение типа
         Product product = (Product) obj;
 
-        // Сравнение примитивного поля id
-        if (id != product.id) return false;
-
-        // Сравнение строки category с обработкой null через Objects.equals
-        return Objects.equals(category, product.category);
+        // 4. Сравнение полей id и category (с использованием Objects.equals для обработки null)
+        return id == product.id &&
+                Objects.equals(category, product.category);
     }
 
     @Override
@@ -42,9 +46,10 @@ public class Product {
         return Objects.hash(id, category);
     }
 
-    // Метод main для тестирования класса Product
+    // Тестирование в отдельном main (как требуется в задании)
     public static void main(String[] args) {
-        System.out.println("=== Тестирование класса Product ===");
+        System.out.println("=== Тестирование класса Product (метод equals) ===");
+        System.out.println();
 
         // Создаем тестовые объекты
         Product product1 = new Product(1, "Ноутбук", 50000, "Электроника");
@@ -53,43 +58,50 @@ public class Product {
         Product product4 = new Product(1, "Планшет", 25000, "Гаджеты"); // другая категория
         Product product5 = new Product(3, "Книга", 500, null); // тест с null категорией
         Product product6 = new Product(3, "Журнал", 300, null); // тот же id и null категория
+        Product product7 = null; // null объект
 
-        // Выводим объекты
+        // Выводим все товары
+        System.out.println("Созданные товары:");
         System.out.println("product1: " + product1);
         System.out.println("product2: " + product2);
         System.out.println("product3: " + product3);
         System.out.println("product4: " + product4);
         System.out.println("product5: " + product5);
         System.out.println("product6: " + product6);
+        System.out.println("product7: null");
+        System.out.println();
 
-        System.out.println("\n=== Результаты сравнения ===");
+        // Тестируем сравнение
+        System.out.println("Результаты сравнения:");
+        System.out.println("1. product1.equals(product1): " + product1.equals(product1) +
+                " (ссылается на себя - должно быть true)");
 
-        // Тест 1: одинаковые id и category
-        System.out.println("product1.equals(product2): " + product1.equals(product2) +
-                " (должно быть true - одинаковые id и category)");
+        System.out.println("2. product1.equals(product2): " + product1.equals(product2) +
+                " (одинаковые id и category - должно быть true)");
 
-        // Тест 2: разные id
-        System.out.println("product1.equals(product3): " + product1.equals(product3) +
-                " (должно быть false - разные id)");
+        System.out.println("3. product1.equals(product3): " + product1.equals(product3) +
+                " (разные id - должно быть false)");
 
-        // Тест 3: разные category
-        System.out.println("product1.equals(product4): " + product1.equals(product4) +
-                " (должно быть false - разные category)");
+        System.out.println("4. product1.equals(product4): " + product1.equals(product4) +
+                " (разные category - должно быть false)");
 
-        // Тест 4: сравнение с null
-        System.out.println("product1.equals(null): " + product1.equals(null) +
-                " (должно быть false)");
+        System.out.println("5. product1.equals(product7): " + product1.equals(product7) +
+                " (сравнение с null - должно быть false)");
 
-        // Тест 5: сравнение с самим собой
-        System.out.println("product1.equals(product1): " + product1.equals(product1) +
-                " (должно быть true)");
+        System.out.println("6. product5.equals(product6): " + product5.equals(product6) +
+                " (оба null в category, одинаковые id - должно быть true)");
 
-        // Тест 6: оба с null категорией и одинаковым id
-        System.out.println("product5.equals(product6): " + product5.equals(product6) +
-                " (должно быть true - одинаковые id и оба null в category)");
+        System.out.println("7. product5.equals(product1): " + product5.equals(product1) +
+                " (разные id и категории - должно быть false)");
 
-        // Тест 7: сравнение объектов разных классов
-        System.out.println("product1.equals(\"строка\"): " + product1.equals("строка") +
-                " (должно быть false)");
+        System.out.println("8. product1.equals(\"строка\"): " + product1.equals("строка") +
+                " (разные классы - должно быть false)");
+
+        // Дополнительные тесты для наглядности
+        System.out.println("\n=== Дополнительные тесты ===");
+        System.out.println("product2 id=" + product2.getId() + ", category=" + product2.getCategory());
+        System.out.println("product4 id=" + product4.getId() + ", category=" + product4.getCategory());
+        System.out.println("product2.equals(product4): " + product2.equals(product4) +
+                " (разные category - должно быть false)");
     }
 }

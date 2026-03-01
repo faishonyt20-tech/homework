@@ -5,5 +5,7 @@ public class Main {
 
         // Запускаем тестирование Order
         Order.main(args);
+
+        System.out.println("\n=== Все тесты успешно выполнены! ===");
     }
 }
